@@ -49,7 +49,6 @@ void *  thread1()
     {
         item = cJSON_GetArrayItem(result_json,i);
         p = cJSON_PrintUnformatted(item);
-//        printf("%s\n",p);
     }
     cJSON * res = cJSON_Parse(p);
     cJSON * location_json = cJSON_GetObjectItem(res,"location");
@@ -59,21 +58,24 @@ void *  thread1()
     result.last_update = cJSON_GetObjectItem(res,"last_update")->valuestring;
     result.name = cJSON_GetObjectItem(location_json,"name")->valuestring;
     result.temp = cJSON_GetObjectItem(now_json,"temperature")->valuestring;
-
-
-    printf("location:%s\n",result.name);
-    printf("counter:%s\n",result.country);
-    printf("weather:%s\n",result.text);
-    printf("temperature:%s\n",result.temp);
-    printf("last update:%s\n",result.last_update);
-
-
+    FILE  * fp2;
+    fp2 = fopen("info.txt","w");
+    fprintf(fp2,"location:%s\n",result.name);
+    fprintf(fp2,"counter:%s\n",result.country);
+    fprintf(fp2,"weather:%s\n",result.text);
+    fprintf(fp2,"temperature:%s\n",result.temp);
+    fprintf(fp2,"last update:%s\n",result.last_update);
     if(root)
         cJSON_Delete(root);
     fclose(fp);
+    fclose(fp2);
     pthread_exit(NULL);
 }
 
+void * thread2()
+{
+    
+}
 void thread_create()
 {
     memset(&thread_1,0,sizeof(thread1));
